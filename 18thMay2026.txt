@@ -1,0 +1,117 @@
+SHOW DATABASES;
+
+USE vitcampus;
+
+SHOW TABLES FROM vitcampus;
+
+SELECT * FROM cse;
+
+DESC cse;
+
+-- Basic DDL codes
+ALTER TABLE cse ADD COLUMN sdept VARCHAR(30);
+
+INSERT INTO cse VALUES (105, 'Tamil', 99, 'cse');
+
+ALTER TABLE cse ADD COLUMN sphn1 INT, ADD COLUMN sph2 INT;
+
+ALTER TABLE cse DROP COLUMN sphn1, DROP COLUMN sph2;
+
+ALTER TABLE cse ADD COLUMN sCountry VARCHAR(30) DEFAULT 'India';
+
+INSERT INTO cse VALUES (106, 'Semi', 93, 'cse', 'Sri Lanka');
+
+ALTER TABLE cse CHANGE sCountry sLocation VARCHAR(30);
+
+SELECT * FROM cse;
+
+SELECT * FROM eee;
+
+TRUNCATE TABLE eee;
+
+insert into EEE values (101,'Vicky',88);
+
+SET SQL_SAFE_UPDATES = 0;
+
+DELETE FROM eee;
+
+DESC eee;
+
+DROP TABLE eee;
+
+-- Basic DML codes
+CREATE TABLE Worker (
+    WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FIRST_NAME CHAR(25),
+    LAST_NAME CHAR(25),
+    SALARY INT,
+    JOINING_DATE DATETIME,
+    DEPARTMENT CHAR(25)
+);
+
+INSERT INTO Worker
+    (FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
+    ('Monika', 'Arora', 100000, '2014-02-20 09:00:00', 'HR'),
+    ('Niharika', 'Verma', 80000, '2014-06-11 09:00:00', 'Admin'),
+    ('Vishal', 'Singhal', 300000, '2014-02-20 09:00:00', 'HR'),
+    ('Amitabh', 'Singh', 500000, '2014-02-20 09:00:00', 'Admin'),
+    ('Vivek', 'Bhati', 500000, '2014-06-11 09:00:00', 'Admin'),
+    ('Vipul', 'Diwan', 200000, '2014-06-11 09:00:00', 'Account'),
+    ('Satish', 'Kumar', 75000, '2014-01-20 09:00:00', 'Account'),
+    ('Geetika', 'Chauhan', 90000, '2014-04-11 09:00:00', 'Admin');
+    
+SELECT * FROM Worker;
+
+UPDATE Worker
+SET FIRST_NAME = 'Jayanth',
+    LAST_NAME = 'V'
+WHERE WORKER_ID = 1;
+
+UPDATE Worker
+SET SALARY = SALARY + 1000;
+
+DELETE FROM Worker
+WHERE WORKER_ID = 8;
+
+SELECT * FROM Worker;
+
+-- Transaction codes
+CREATE TABLE ECE (id INT);
+
+START TRANSACTION;
+
+INSERT INTO ECE VALUES (1);
+SAVEPOINT point_1;
+
+INSERT INTO ECE VALUES (2);
+SAVEPOINT point_2;
+
+INSERT INTO ECE VALUES (3);
+
+SELECT * FROM ECE;
+
+ROLLBACK TO point_2;
+
+SELECT * FROM ECE;
+
+COMMIT;
+
+-- equal
+SELECT * FROM Worker
+WHERE SALARY = 100000;
+
+-- greater than
+SELECT * FROM Worker
+WHERE SALARY > 200000;
+
+-- lesser than
+SELECT * FROM Worker
+WHERE SALARY < 90000;
+
+-- greater than or equal to AND lesser than or equal to
+SELECT * FROM Worker
+WHERE SALARY >= 100000 AND JOINING_DATE <= '2014-04-11';
+
+-- Not equal
+SELECT * FROM Worker
+WHERE DEPARTMENT != 'HR';
