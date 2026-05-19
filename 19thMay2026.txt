@@ -1,0 +1,139 @@
+use vitcampus;
+
+SELECT * FROM Worker;
+
+SELECT first_name,department,salary FROM Worker
+WHERE DEPARTMENT='admin' OR SALARY>='100000';
+
+SELECT first_name,department,salary FROM Worker
+WHERE DEPARTMENT='admin' AND SALARY>='100000';
+
+SELECT worker_id,first_name,department,salary FROM Worker
+WHERE worker_id IN (1,6,7);
+
+SELECT worker_id,first_name,department,salary FROM Worker
+WHERE worker_id NOT IN (1,6,7);
+
+SELECT * FROM Worker 
+WHERE SALARY BETWEEN 110000 AND 300000;
+
+SELECT * FROM Worker 
+WHERE SALARY NOT BETWEEN 110000 AND 300000;
+
+SELECT * FROM Worker 
+WHERE SALARY BETWEEN 100000 AND 500000
+AND DEPARTMENT NOT IN ('hr','admin');
+
+-- Mix of BETWEEN AND and IN NOT IN(DONE IN CLASS)
+SELECT * FROM Worker 
+WHERE SALARY BETWEEN 200000 AND 500000
+OR DEPARTMENT IN ('hr','Account');
+
+-- Mix of BETWEEN AND and comparision operator(Done in class)
+SELECT * FROM Worker 
+WHERE JOINING_DATE BETWEEN '2014-02-20' AND '2014-06-11'
+AND SALARY > 300000;
+
+-- Mix of BETWEEN AND and NOT IN operator(Done in class)
+SELECT * FROM Worker 
+WHERE JOINING_DATE BETWEEN '2014-02-20' AND '2014-06-11'
+AND SALARY NOT IN (110000,310000);
+
+
+SELECT * FROM Worker
+WHERE first_name LIKE '__i%';
+
+SELECT * FROM Worker
+WHERE first_name LIKE 'V%e_';
+
+SELECT * FROM Worker
+WHERE first_name LIKE '_i__%';
+
+SELECT * FROM Worker
+WHERE first_name LIKE '_i__a%';
+
+SELECT * from Worker;
+
+-- Own practice for Like.
+--  Pattern _aya%(gives Jayanth)
+SELECT * FROM Worker 
+WHERE first_name LIKE '_aya%';
+
+-- Pattern Singh% (Gives Vishal Singhal and Amitabh Singh)
+SELECT * FROM Worker
+WHERE last_name LIKE 'Singh%';
+
+-- Pattern '_' (Gives Jayanth V who has only one character in last name)
+SELECT * FROM Worker 
+WHERE last_name LIKE '_';
+
+SELECT * FROM WORKER;
+-- Aggregrate operators on a particular column
+SELECT min(salary) FROM Worker;
+
+SELECT min(salary) FROM Worker
+WHERE department='admin';
+
+SELECT max(salary) FROM worker
+WHERE department='hr';
+
+SELECT count(worker_id) FROM Worker
+WHERE department = 'admin';
+
+SELECT sum(salary) FROM Worker
+WHERE department = 'hr';
+
+SELECT avg(salary) FROM Worker
+WHERE department = 'Account';
+
+
+-- Class question finding minimum salary of admin department where name doesn't have a.
+SELECT min(salary) FROM Worker
+WHERE department = 'Admin' AND (first_name NOT LIKE '%A%'
+AND first_name NOT LIKE '%a%');
+
+SELECT salary FROM worker
+UNION ALL
+SELECT salary FROM worker;
+
+SELECT salary FROM worker
+UNION 
+SELECT salary FROM worker;
+
+SELECT WORKER_ID AS ROLLNUMBER FROM WORKER;
+
+SELECT DISTINCT(DEPARTMENT) FROM WORKER;
+SELECT * FROM WORKER;
+
+SELECT worker_id, first_name,
+CASE
+    WHEN salary > 300000 THEN 'Rich people'
+    WHEN salary >= 100000 and salary <299999 THEN 'Middle'
+    ELSE 'Poor'
+END 
+AS Status
+FROM worker;
+
+
+CREATE VIEW minSalaryAdmin AS SELECT min(salary) FROM WORKER
+WHERE department = 'Admin';
+
+CREATE VIEW maxSalaryAdmin AS SELECT max(salary) FROM WORKER
+WHERE department = 'Admin';
+
+SELECT * FROM minSalaryAdmin;
+SELECT * FROM maxSalaryAdmin;
+
+-- Own view creation to find minimum salary in HR
+CREATE VIEW minSalaryHr AS SELECT max(salary) FROM WORKER
+WHERE department = 'hr';
+
+-- Own view creation to find maximum salary in HR
+CREATE VIEW maxSalaryHr AS SELECT max(salary) FROM WORKER
+WHERE department = 'hr';
+
+-- Using those views
+SELECT * FROM minSalaryHr;
+SELECT * FROM maxSalaryHr;
+
+
