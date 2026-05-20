@@ -1,0 +1,113 @@
+use vitcampus;
+
+CREATE TABLE Persons(
+   ID int NOT NULL,
+   LastName varchar(255) UNIQUE NOT NULL,
+   FirstName varchar(255) NOT NULL,
+   Age int
+);
+
+DESC Persons;
+
+INSERT INTO Persons VALUES(101,'V','Jayanth',NULL);
+
+SELECT * FROM Persons;
+
+ALTER TABLE Persons 
+ADD UNIQUE(AGE);
+
+ALTER TABLE Persons 
+DROP CONSTRAINT AGE;
+
+-- Checking after dropping
+DESC Persons;
+
+
+-- Dropping for next constraints adding
+DROP TABLE Persons;
+
+-- Adding check constraints
+CREATE TABLE Persons(
+   ID int NOT NULL,
+   LastName varchar(255) UNIQUE NOT NULL,
+   FirstName varchar(255) NOT NULL,
+   Age int NOT NULL,
+   CHECK (Age>=18 AND Age<=23)
+);
+
+-- Adding check constraint after creating(My own constraint)
+ALTER TABLE Persons
+ADD CHECK (ID>=0 AND ID<=10000);
+
+DESC Persons;
+
+-- Understanding default constraint(values which are default if we do not mention that column's value)
+CREATE TABLE Persons1(
+   ID int NOT NULL,
+   LastName varchar(255) UNIQUE NOT NULL,
+   FirstName varchar(255) NOT NULL,
+   Age int NOT NULL,
+   City VARCHAR(255) DEFAULT 'Coimbatore',
+   CHECK (Age>=18 AND Age<=23)
+);
+
+DESC Persons1;
+
+
+CREATE TABLE Products(
+   pid INT PRIMARY KEY,
+   pname VARCHAR(100) NOT NULL,
+   prefNo INT NOT NULL UNIQUE
+);
+
+DESC Products;
+
+-- Inserting values with no clashing id so that primary key constraint is respected.
+INSERT INTO Products VALUES(1,'Nithiesh',10),(2,'Pavan',20);
+SELECT * FROM Products;
+
+-- Adding primary key after creation of table using alter(Using persons table)
+ALTER TABLE Persons
+ADD PRIMARY KEY(ID);
+
+DESC Persons;
+-- Dropping primary key after creation of table using alter(Using persons table)
+ALTER TABLE Persons
+DROP PRIMARY KEY;
+
+DESC Persons;
+
+DROP TABLE Products;
+
+CREATE TABLE Category(
+   cid INT PRIMARY KEY,
+   cname VARCHAR(100) NOT NULL
+);
+
+DESC Category;
+
+INSERT INTO Category VALUES (101,'electronics'),(102,'Home App');
+
+CREATE TABLE Products(
+   pid INT PRIMARY KEY,
+   pname VARCHAR(100) NOT NULL,
+   cid INT,
+   CONSTRAINT fk_cid  -- Constraint constraint_name(helps to drop later)
+   FOREIGN KEY(cid) REFERENCES category(cid)
+);
+
+DESC Products;
+
+-- The foreign key can only take values which are present in parent table(duplicated or null also allowed but not the keys not present in the table.)
+INSERT INTO Products VALUES (501,'HP Laptop',101),
+                            (502,'Washing machine',101),
+                            (503,'Heater',102),
+                            (504,'Power bank samsung',102);
+                            
+SELECT * FROM Category;
+
+SELECT * FROM Products;
+
+DELETE FROM Category WHERE cid=101; -- Forbidden will show error because it affects the child
+
+DELETE FROM Products WHERE cid=101; -- This works because deleting this does not cause problems to itself or parent
