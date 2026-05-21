@@ -1,0 +1,159 @@
+show databases;
+
+use vitcampus;
+
+show tables from vitcampus;
+
+select * from category;
+select * from products;
+
+delete from category 
+where cid = 101;
+
+drop table products;
+
+create table products (
+	pid int primary key,
+    pname varchar(100) not null,
+    prefno int unique not null,
+    cid int,
+    foreign key (cid) references category (cid) on delete cascade
+);
+
+create table products (
+	pid int primary key,
+    pname varchar(100) not null,
+    prefno int unique not null,
+    cid int,
+    foreign key (cid) references category (cid) on update cascade
+);
+
+delete from category
+where cid = 103;
+
+insert into category values(105,'Home App');
+
+insert into products values(101,'Hair Dryer',19932,101);
+insert into products values(102,'Power Bank',19933,101);
+insert into products values(103,'Wooden Chair',19938,105);
+
+-- Related child rows also deleted because of on delete cascade
+delete from category
+where cid = 105;
+
+-- Child foreign key values also update because of on update cascade
+update category
+set cid = 103
+where cname = 'Home app';
+
+-- aggregate functions cannot be used directly in where
+-- for that we use group by and having
+
+select * from worker;
+
+select first_name, department, salary from worker
+where department = 'admin';
+
+-- order by sorts in ascending by default
+select first_name, department, salary from worker
+where department = 'admin'
+order by salary;
+
+select first_name, department, salary from worker
+where department = 'admin'
+order by salary desc;
+
+select count(*) as Total_Workers from worker;
+
+-- group by combines same department rows
+select department, count(department) as Count from worker
+group by department;
+
+select department, count(department) as Count from worker
+group by department
+order by department;
+
+select department, count(department) as Count from worker
+group by department
+order by department desc;
+
+select department, count(department) as Count from worker
+group by department
+order by Count;
+
+select department, count(department) as Count from worker
+group by department
+order by Count desc;
+
+-- department wise total salary
+select department, sum(salary) as Amount_Spent from worker
+group by department;
+
+select department, sum(salary) as Amount_Spent from worker
+group by department
+order by Amount_Spent;
+
+-- having is used to filter grouped data
+select department, sum(salary) as Amount_spent from worker
+group by department
+having Amount_spent < 300000;
+
+select * from worker;
+
+-- limit restricts number of rows
+select * from worker
+limit 5;
+
+select * from worker
+limit 3;
+
+-- offset skips rows first
+select * from worker
+limit 1 offset 3;
+
+select * from worker
+limit 3 offset 3;
+
+select * from worker
+limit 3 offset 4;
+
+-- subquery means query inside another query
+create table toppers (
+	id int
+);
+
+insert into toppers values
+(2),
+(7);
+
+select * from toppers;
+
+select worker_id,first_name, department, salary from worker
+where worker_id in (
+	select id from toppers
+);
+
+-- first 2 departments with least salary spending
+select department, sum(salary) as Amount_spent from worker
+group by department
+order by Amount_spent
+limit 2;
+
+-- second highest salary in admin department
+select first_name, department, salary from worker
+where department = 'admin'
+order by salary desc
+limit 1 offset 1;
+
+select * from worker;
+
+-- second highest salary person from each department
+select first_name, department, salary
+from worker w1
+where salary = (
+    select distinct salary
+    from worker w2
+    where w1.department = w2.department
+    order by salary desc
+    limit 1 offset 1
+);   
