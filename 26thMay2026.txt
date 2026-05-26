@@ -1,0 +1,226 @@
+show collections
+
+Employee
+Student
+
+
+db.Employee.find()
+
+{
+  _id: ObjectId('6a145e453c5e2f4f0213ad75'),
+  Name: 'Ajay',
+  Age: 26
+}
+
+{
+  _id: ObjectId('6a145e743c5e2f4f0213ad76'),
+  Name: 'Ayush',
+  Mark: 99,
+  Location: 'Chennai'
+}
+
+
+
+db.Employee.find().pretty()
+
+{
+  _id: ObjectId('6a145e453c5e2f4f0213ad75'),
+  Name: 'Ajay',
+  Age: 26
+}
+
+{
+  _id: ObjectId('6a145e743c5e2f4f0213ad76'),
+  Name: 'Ayush',
+  Mark: 99,
+  Location: 'Chennai'
+}
+
+
+
+
+db.Products.insertMany([
+  {
+    "_id" : 1,
+    "name" : "xPhone",
+    "price" : 799,
+    "releaseDate" : ISODate("2011-05-14"),
+    "spec" : { "ram" : 4 , "screen" : 6.5 , "cpu" : 2.66 },
+    "color" : ["white","black"],
+    "storage" : [64,128,256]
+  },
+
+  {
+    "_id" : 2,
+    "name" : "xTablet",
+    "price" : 899,
+    "releaseDate" : ISODate("2011-09-01"),
+    "spec" : { "ram" : 16 , "screen" : 9.5 , "cpu" : 3.66 },
+    "color" : ["white","black","purple"],
+    "storage" : [128,256,512]
+  },
+
+  {
+    "_id" : 3,
+    "name" : "SmartTablet",
+    "price" : 899,
+    "releaseDate" : ISODate("2015-01-14"),
+    "spec" : { "ram" : 12 , "screen" : 9.7 , "cpu" : 3.66 },
+    "color" : ["blue"],
+    "storage" : [16,64,128]
+  },
+
+  {
+    "_id" : 4,
+    "name" : "SmartPad",
+    "price" : 699,
+    "releaseDate" : ISODate("2020-05-14"),
+    "spec" : { "ram" : 8 , "screen" : 9.7 , "cpu" : 1.66 },
+    "color" : ["white","orange","gold","gray"],
+    "storage" : [128,256,1024]
+  },
+
+  {
+    "_id" : 5,
+    "name" : "SmartPhone",
+    "price" : 599,
+    "releaseDate" : ISODate("2022-09-14"),
+    "spec" : { "ram" : 4 , "screen" : 5.7 , "cpu" : 1.66 },
+    "color" : ["white","orange","gold","gray"],
+    "storage" : [128,256]
+  }
+])
+
+
+
+db.Products.find()
+
+db.Employee.findOne({_id:5})
+
+db.Products.findOne({_id:5})
+
+db.Products.findOne({_id:5},{name:1})
+
+db.Products.findOne({_id:5},{name:1,color:1})
+
+db.Products.findOne({_id:5},{name:0,color:0})
+
+db.Products.findOne({_id:5},{name:1,_id:0})
+
+
+
+db.Products.find({}, { name:1 })
+
+db.Products.find({}, { name:1 , _id:0 })
+
+db.Products.find({}, { Storage:1 })
+
+db.Products.find({}, { name:1 , storage:1 })
+
+db.Products.find({}, { name:1 , spec:1 })
+
+db.Products.find({}, { name:1 , spec:{cpu:1} })
+
+
+
+db.Products.find({},{
+  name:1,
+  storage:{$slice:[1,1]}
+})
+
+
+
+db.Products.find({},{
+  name:1,
+  spec:{cpu:1,ram:1}
+})
+
+
+
+db.Products.find({ price:899 })
+
+db.Products.find({}, { name:1 , price:1 })
+
+db.Products.find({ price:{$eq:899} })
+
+db.Products.find(
+  { price:{$eq:899} },
+  { name:1 , price:1 }
+)
+
+
+
+db.Products.find(
+  { color:{$eq:"black"} },
+  { name:1 , price:1 }
+)
+
+
+
+db.Products.find(
+  { color:{$eq:"black"} },
+  { price:1 , name:1 , color:1 }
+)
+
+
+
+db.Products.find(
+  { "spec.ram":12 },
+  { name:1 , price:1 , "spec.ram":1 }
+)
+
+
+
+db.Products.find(
+  { "spec.ram":16 },
+  { name:1 , price:1 , "spec.ram":1 }
+)
+
+
+
+db.Products.find(
+  { "spec.ram":4 },
+  { name:1 , price:1 , "spec.ram":1 }
+)
+
+
+
+db.Products.find(
+  { price:{$lt:799} },
+  { name:1 , price:1 }
+)
+
+
+
+db.Products.find(
+  { price:{$lte:799} },
+  { name:1 , price:1 , spec:{ram:1} }
+)
+
+
+
+db.Products.find(
+  { "spec.ram":{$gt:8} },
+  { name:1 , price:1 , "spec.ram":1 , color:1 }
+)
+
+
+
+db.Products.find(
+  { storage:{$gte:128} },
+  { name:1 , price:1 , "spec.ram":1 , color:1 }
+)
+
+
+
+db.Products.find(
+  { storage:{$gte:128} },
+  { name:1 , price:1 , "spec.ram":1 , color:1 , storage:1 }
+)
+
+
+
+db.Products.find(
+  { storage:{$gte:256} },
+  { name:1 , price:1 , "spec.ram":1 , color:1 , storage:1 }
+)
